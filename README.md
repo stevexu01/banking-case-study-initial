@@ -1,20 +1,112 @@
 # Banking Case Study
 
-###### Overview
 You're going to create a banking application.  The banking application has the following lines of business (LoBs):
 
 * Deposit Accounts
-* Credit Card
-* Auto Loans
+* Credit Card Accounts
+* Auto Loan Accounts
 
-Bank decided to consolidate and display on the dashboard, all the accounts belonging to a particular customer once he/she logs in to the Bank application.
+The bank has decided to consolidate and display on the dashboard (a non-existent UI), all the accounts belonging to a particular customer once they log into the banking application.
  
-###### Expectation
-* Design 4 microservices
-* Develop 3 microservices one for each LoBs to provide Accounts CRUD operations.
-* Develop a microservice, that makes 3 parallel calls to each respective LoB Microservices and aggregates them within stipulated time say max 5 seconds.
-* Implement a circuit breaker pattern for parallel calls, to break the wait and respond with the default response for only that particular call which didn’t respond in time (5 sec). Total wait time for all the 3 parallel calls should be 5 seconds (but not 5+5+5=15 seconds)
-* Microservices should have CICD for build and deploy, must be deployed in AWS cloud and are scalable
+#### Overall Deliverables
+* Design and build a REST service for deposit accounts.
+* Design and build a REST service for credit card accounts.
+* Design and build a REST service for auto loan accounts.
+* Design and build a REST service for aggregating data from the 3 previous microservices.
+ 
+## Microservice Details
+
+#### Auto Loan Microservice
+Using the patterns and standards you learned in this class, design and build a microservice to manage auto loan accounts.
+
+The microservice needs to have the following items implemented:
+
+* Needs to be a REST service.
+* All CRUD endpoints need to be implemented (5 in total).
+  * There need to be 2 READ endpoints:
+    * getLoanById
+    * getAllLoans
+* Endpoints are as follows:
+
+    * /autoloan/createLoan
+        * Accepts loan information from request body.
+        * Returns loan created in response body.
+        * Returns a 200 status code if successful.
+        * Example of request/response body:
+            ```json
+            {
+              "id": "1",      
+              "name": "Homer Simpson",
+              "balance": "15000.0"
+            }     
+            ```
+    * /autoloan/getLoanById/{id}
+        * Returns loan queried in response body.
+        * Returns a 200 status code if successful.
+        * Example of request:
+            ```text
+              http://localhost:9091/autoloan/getLoanById/1
+            ```
+        * Example of response:
+            ```json
+            {
+              "id": "1",      
+              "name": "Homer Simpson",
+              "balance": "15000.0"
+            }     
+            ```
+    * /autoloan/getAllLoans
+        * Returns a list of all loan information in the system.
+        * Returns a 200 status code if successful.
+        * Example of response:
+            ```json
+            [
+             {
+                "id": "1",      
+                "name": "Homer Simpson",
+                "balance": "15000.0"
+             },
+             {
+                "id": "2",      
+                "name": "Marge Simpson",
+                "balance": "10000.0"
+             } 
+            ] 
+            ```
+    * /autoloan/updateLoan/{id}
+        * Accepts loan information from request body.
+        * Returns loan updated in response body.
+        * Returns a 200 status code if successful.
+        * Example of request:
+            ```text
+              http://localhost:9091/autoloan/updateLoan/1
+            ```
+        * Example of request/response body:
+            ```json
+            {
+              "id": "1",      
+              "name": "Homer J Simpson",
+              "balance": "15000.0"
+            }     
+            ```
+    * /autoloan/deleteLoan/{id}
+        * Returns a 204 status code if successful.
+        * Returns a 404 status code if unsuccessful.
+        * Example of unsuccessful message:
+        ```text
+        Record not deleted.
+        ```
+
+* Use Cassandra to store *AutoLoan* objects.
+* Use a circuit breaker to return a message if the data or database is unavailable.
+    ```text
+    Data is unavailable at this time.
+    ```
+
+#### Credit Card Microservice
+#### Deposit Microservice
+#### Orchestrator Microservice
+
  
 ###### Response
 Aggregated response should look like (for example)
@@ -34,7 +126,7 @@ Aggregated response should look like (for example)
 * Framework - Springboot
 * Cassandra DB - for microservice CRUD
 * Java Executor Service and Stream APIs for Accounts aggregation
-* Use Resilience4j framework to implement Circuit Breaker
+* Use Hystrix framework to implement Circuit Breaker
 * GitHub for code repository
 * Using AWS Code build, Code Deploy and Code Pipelines create CICD pipeline
 * Push the artifacts to AWS ECR
