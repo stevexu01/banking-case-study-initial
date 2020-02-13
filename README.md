@@ -65,7 +65,7 @@ The microservice needs to have the following items implemented:
 }     
 ```
 
-##### /autoloan/getLoansByClientId/{id}
+##### /autoloan/getLoansByClientId/{clientId}
 * Returns loans queried in response body.
 * Returns a 200 status code if successful.
 
@@ -133,8 +133,7 @@ The microservice needs to have the following items implemented:
 ```json
 {    
   "clientId" : "001",      
-  "name": "Homer J Simpson",
-  "balance": "15000.0"
+  "name": "Homer J Simpson"
 }     
 ```
 
@@ -182,83 +181,128 @@ The microservice needs to have the following items implemented:
     * updateCreditCard
     * deleteCreditCard
     * There need to be 2 READ endpoints:
-        * getCreditCardById
+        * getCreditCardsByClientId
         * getAllCreditCards
 * Credit card numbers are all randomly generated, unique, 16 digit numbers.  The first four numbers of the account number are always 1234.
     
-###### Endpoint Detail
-* /creditcard/createCreditCard
-    * Accepts credit card information from request body.
-    * Returns credit card created in response body.
-    * Returns a 200 status code if successful.
-    * Example of request/response body:
-        ```json
-        {        
-          "number": "1234 5678 9012 3456",      
-          "name": "Homer Simpson",
-          "balance": "500.0"
-        }     
-        ```
-* /creditcard/getCreditCardById/{id}
-    * Returns credit card queried in response body.
-    * Returns a 200 status code if successful.
-    * Example of request:
-        ```text
-          http://localhost:9092/creditcard/getCreditCardById/1
-        ```
-    * Example of response:
-        ```json
-        {
-          "id": "1",
-          "number": "1234 5678 9012 3456",      
-          "name": "Homer Simpson",
-          "balance": "500.0"
-        }     
-        ```
-* /creditcard/getAllCreditCards
-    * Returns a list of all loan information in the system.
-    * Returns a 200 status code if successful.
-    * Example of response:
-        ```json
-        [
-         {
-            "id": "1",
-            "number": "1234 5678 9012 3456",      
-            "name": "Homer Simpson",
-            "balance": "500.0"
-         },
-         {
-            "id": "2",
-            "number": "9876 5432 1098 7654",      
-            "name": "Marge Simpson",
-            "balance": "100.0"
-         } 
-        ] 
-        ```
-* /creditcard/updateCreditCard/{id}
-    * Accepts credit card information from request body.
-    * Returns credit card updated in response body.
-    * Returns a 200 status code if successful.
-    * Example of request:
-        ```text
-          http://localhost:9092/creditcard/updateCreditCard/1
-        ```
-    * Example of request/response body:
-        ```json
-        {
-          "id": "1",
-          "number": "1234 5678 9012 3456",      
-          "name": "Homer J Simpson",
-          "balance": "100.0"
-        }     
-        ```
-* /creditcard/deleteCreditCard/{id}
-    * Returns a 204 status code if successful.
-    * Returns a 404 status code if unsuccessful.
-    * Example of unsuccessful message:
-        ```text
-        Record not deleted.
-        ```
+#### Endpoint Detail
+##### /creditcard/createCreditCard
+* Accepts credit card information from request body.
+* Returns credit card created in response body.
+* Returns a 200 status code if successful.
+###### Request
+
+```text
+    http://localhost:9092/creditcard/createCreditCard
+```
+
+###### Request Body
+
+```json
+{        
+  "clientId" : "001",
+  "number": "1234 5678 9012 3456",      
+  "name": "Homer Simpson",
+  "balance": "500.0"
+}     
+```
+        
+###### Response Body
+
+```json
+{        
+  "id" : "1",  
+  "clientId" : "001",
+  "number": "1234 5678 9012 3456",      
+  "name": "Homer Simpson",
+  "balance": "500.0"
+}     
+```
+
+##### /creditcard/getCreditCardsByClientId/{clientId}
+* Returns credit card queried in response body.
+* Returns a 200 status code if successful.
+    
+###### Request
+```text
+    http://localhost:9092/creditcard/getCreditCardsByClientId/1
+```
+###### Response Body
+```json
+[
+  {
+    "id": "1",
+    "clientId" : "001",
+    "number": "1234 5678 9012 3456",      
+    "name": "Homer Simpson",
+    "balance": "500.0"
+  } 
+]    
+```
+##### /creditcard/getAllCreditCards
+* Returns a list of all loan information in the system.
+* Returns a 200 status code if successful.
+
+###### Response Body
+```json
+[
+ {
+    "id": "1",
+    "clientId" : "001",
+    "number": "1234 5678 9012 3456",      
+    "name": "Homer Simpson",
+    "balance": "500.0"
+ },
+ {
+    "id": "2",
+    "clientId" : "004",
+    "number": "9876 5432 1098 7654",      
+    "name": "Marge Simpson",
+    "balance": "100.0"
+ } 
+] 
+```
+##### /creditcard/updateCreditCard/{id}
+* Accepts credit card information from request body.
+* Returns credit card updated in response body.
+* Returns a 200 status code if successful.
+
+###### Request
+
+```text
+    http://localhost:9092/creditcard/updateCreditCard/1
+```
+    
+###### Request Body
+
+```json
+{
+  "clientId": "001",
+  "number": "1234 5678 9012 3456",      
+  "name": "Homer J Simpson"
+}     
+```
+        
+###### Response Body
+
+```json
+{
+  "id" : "1",
+  "clientId": "001",
+  "number": "1234 5678 9012 3456",      
+  "name": "Homer J Simpson",
+  "balance": "100.0"
+}     
+```
+
+##### /creditcard/deleteCreditCard/{id}
+* Returns a 204 status code if successful.
+* Returns a 404 status code if unsuccessful.
+
+###### Example of Unsuccessful Message:
+```text
+    Record not deleted.
+```
 
 ## Deposit Microservice
 Using the patterns and standards you learned in this class, design and build a microservice to manage deposit accounts.
@@ -277,86 +321,136 @@ The microservice needs to have the following items implemented:
     * updateDepositAccount
     * deleteDepositAccount
     * There need to be 2 READ endpoints:
-        * getDepositAccountById
+        * getDepositAccountsByClientId
         * getAllDepositAccounts
 * The deposit account number is a randomly generated, unique, 9-digit numeric value which is assigned to the account when it is created.
     
 ###### Endpoint Detail
-* /deposit/createDepositAccount
-    * Accepts user information from request body.
-    * Returns deposit account information created in response body.
-    * Returns a 200 status code if successful.
-    * Example of request body:
-        ```json
-        {            
-          "name": "Homer Simpson",
-          "initialBalance": "500.0"
-        }     
-        ```
-    * Example of response body:
-      ```json
-      {
-        "accountNumber": "123456789",     
-        "name": "Homer Simpson",
-        "balance": "500.0"
-      }     
-      ```
-* /deposit/getDepositAccountById/{id}
-    * Returns deposit account queried in response body.
-    * Returns a 200 status code if successful.
-    * Example of request:
-        ```text
-          http://localhost:9093/deposit/getDepositAccountById/123456789
-        ```
-    * Example of response:
-        ```json
-        {
-          "accountNumber": "123456789",      
-          "name": "Homer Simpson",
-          "balance": "500.0"
-        }     
-        ```
-* /deposit/getAllDepositAccounts
-    * Returns a list of all loan information in the system.
-    * Returns a 200 status code if successful.
-    * Example of response:
-        ```json
-        [
-         {
-            "accountNumber": "123456789",      
-            "name": "Homer Simpson",
-            "balance": "500.0"
-         },
-         {
-            "accountNumber": "987654321",      
-            "name": "Marge Simpson",
-            "balance": "1000.0"
-         } 
-        ] 
-        ```
-* /deposit/updateDepositAccount/{id}
-    * Accepts deposit account information from request body.
-    * Returns deposit account updated in response body.
-    * Returns a 200 status code if successful.
-    * Example of request:
-        ```text
-          http://localhost:9093/deposit/updateDepositAccount/123456789
-        ```
-    * Example of request/response body:
-        ```json
-        {
-          "accountNumber": "123456789",      
-          "name": "Homer J Simpson",
-          "balance": "100.0"
-        }     
-        ```
-* /deposit/deleteDepositAccount/{id}
-    * Returns a 204 status code if successful.
-    * Returns a 404 status code if unsuccessful.
-    * Example of unsuccessful message:
-        ```text
-        Record not deleted.
-        ```
+##### /deposit/createDepositAccount
+* Accepts user information from request body.
+* Returns deposit account information created in response body.
+* Returns a 200 status code if successful.
+
+##### Request
+
+```text
+    http://localhost:9093/deposit/createDepositAccount
+```
+##### Request Body
+
+```json
+{            
+  "clientId" : "001", 
+  "name": "Homer Simpson",
+  "initialBalance": "500.0"
+}     
+```
+
+##### Response Body
+
+  ```json
+  {
+    "id" : "1",
+    "clientId" : "001",
+    "accountNumber": "123456789",     
+    "name": "Homer Simpson",
+    "balance": "500.0"
+  }     
+  ```
+
+##### /deposit/getDepositAccountsByClientId/{clientId}
+* Returns deposit account queried in response body.
+* Returns a 200 status code if successful.
+
+###### Request
+
+```text
+    http://localhost:9093/deposit/getDepositAccountsByClientId/001
+```
+    
+###### Response Body
+
+```json
+{
+  "id" : "1",
+  "clientId" : "001",
+  "accountNumber": "123456789",      
+  "name": "Homer Simpson",
+  "balance": "500.0"
+}     
+```
+      
+##### /deposit/getAllDepositAccounts
+* Returns a list of all loan information in the system.
+* Returns a 200 status code if successful.
+
+###### Request
+```text
+    http://localhost:9093/deposit/getAllDepositAccounts
+```
+
+###### Response Body
+```json
+[
+ {
+    "id" : "1",
+    "clientId" : "001",
+    "accountNumber": "123456789",      
+    "name": "Homer Simpson",
+    "balance": "500.0"
+ },
+ {
+    "id" : "2",
+    "clientId" : "004",
+    "accountNumber": "987654321",      
+    "name": "Marge Simpson",
+    "balance": "1000.0"
+ } 
+] 
+```
+      
+##### /deposit/updateDepositAccount/{id}
+* Accepts deposit account information from request body.
+* Returns deposit account updated in response body.
+* Returns a 200 status code if successful.
+
+###### Request
+
+```text
+    http://localhost:9093/deposit/updateDepositAccount/1
+```
+
+###### Request Body
+
+```json
+{
+  "clientId" : "001",
+  "accountNumber": "123456789",      
+  "name": "Homer J Simpson"
+}     
+```
+      
+###### Response Body
+
+```json
+{
+  "id" : "1",
+  "clientId" : "001",
+  "accountNumber": "123456789",      
+  "name": "Homer J Simpson",
+  "balance" : "500.0"
+}     
+```
+
+##### /deposit/deleteDepositAccount/{id}
+* Returns a 204 status code if successful.
+* Returns a 404 status code if unsuccessful.
+
+###### Example of Unsuccessful Message
+
+```text
+    Record not deleted.
+```
       
 ## Orchestrator Microservice
 Using the patterns and standards you learned in this class, design and build an orchestrator microservice.  The whole purpose of the orchestrator is to aggregate information from all the other 3 microservices and serve it via a REST endpoint.
@@ -373,13 +467,15 @@ The microservice needs to have the following items implemented:
     
 ###### Endpoint Detail
 The orchestrator has a single REST endpoint:
-* /getAccountSummaryByClientId/{clientId}
+
+##### /getAccountSummaryByClientId/{clientId}
+
 ###### Request
     ```text
       http://localhost:9090/getAccountSummaryByClientId/001
     ```
-###### Response
-Aggregated response should look like (for example)
+###### Response Body
+Aggregated response should look like:
 
 * When all 3 microservices respond in-time:
 ```json
