@@ -21,6 +21,8 @@ Details for each microservice are below.
 ## Auto Loan Microservice
 Using the patterns and standards you learned in this class, design and build a microservice to manage auto loan accounts.
 
+![AutoLoan](images/suggested_design_autoloan.png)
+
 The microservice needs to have the following items implemented:
 
 * Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
@@ -162,10 +164,10 @@ The microservice needs to have the following items implemented:
     Record not deleted.
 ```
 
-
-
 ## Credit Card Microservice
 Using the patterns and standards you learned in this class, design and build a microservice to manage credit card accounts.
+
+![CreditCard](images/suggested_design_creditcard.png)
 
 The microservice needs to have the following items implemented:
 
@@ -306,6 +308,8 @@ The microservice needs to have the following items implemented:
 
 ## Deposit Microservice
 Using the patterns and standards you learned in this class, design and build a microservice to manage deposit accounts.
+
+![Deposit](images/suggested_design_deposit.png)
 
 The microservice needs to have the following items implemented:
 
@@ -455,6 +459,8 @@ The microservice needs to have the following items implemented:
 ## Orchestrator Microservice
 Using the patterns and standards you learned in this class, design and build an orchestrator microservice.  The whole purpose of the orchestrator is to aggregate information from all the other 3 microservices and serve it via a REST endpoint.
 
+![Orchestrator](images/suggested_design_orchestrator.png)
+
 The microservice needs to have the following items implemented:
 
 * Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
@@ -471,9 +477,11 @@ The orchestrator has a single REST endpoint:
 ##### /getAccountSummaryByClientId/{clientId}
 
 ###### Request
-    ```text
-      http://localhost:9090/getAccountSummaryByClientId/001
-    ```
+
+```text
+  http://localhost:9090/getAccountSummaryByClientId/001
+```
+    
 ###### Response Body
 Aggregated response should look like:
 
@@ -482,12 +490,14 @@ Aggregated response should look like:
 {
   "accountSummary" : {
     "depositAccounts" : [ {
+      "id" : "1",
       "clientId" : "001",
       "accountNumber" : "1234566",
       "name" : "Homer",
       "balance" : 10000.0
     } ],
     "creditAccounts" : [ {
+      "id" : "1",
       "clientId" : "1",
       "accountNumber" : "12345",
       "name" : "Homer",
@@ -508,6 +518,7 @@ Aggregated response should look like:
 {
   "accountSummary" : {
     "depositAccounts" : [ {
+      "id" : "1",
       "clientId" : "001",
       "accountNumber" : "1234566",
       "name" : "Homer",
