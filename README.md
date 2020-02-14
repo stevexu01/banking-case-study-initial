@@ -15,6 +15,31 @@ The bank has decided to consolidate and display on the dashboard (a non-existent
 * Design and build a REST service for aggregating data from the 3 previous microservices.
 * Use patterns discussed in class (MVC, 3-tier, Builder).
  
+#### Reference Documentation
+For further reference, please consider the following:
+
+* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
+* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/maven-plugin/)
+* [Spring Data for Apache Cassandra](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-cassandra)
+* [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#production-ready)
+* [Spring Web](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
+* [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-jpa-and-spring-data)
+* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#using-boot-devtools)
+
+#### Guides
+The following guides illustrate how to use some features concretely:
+
+* [Building a RESTful Web Service with Spring Boot Actuator](https://spring.io/guides/gs/actuator-service/)
+* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* [Consuming a RESTful Web Service](https://spring.io/guides/gs/consuming-rest/)
+* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
+* [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
+* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
+* [Jackson Annotation Examples](https://www.baeldung.com/jackson-annotations)
+* [Netflix Circuit Breaker](https://spring.io/guides/gs/circuit-breaker/)
+* [RestTemplate Timeout Example](https://howtodoinjava.com/spring-boot2/resttemplate/resttemplate-timeout-example/)
+* [@JsonInclude Example](https://www.java67.com/2019/09/3-ways-to-ignore-null-fields-in-json-java-jackson.html)
+
 ## Microservice Details
 Details for each microservice are below.
 
@@ -25,7 +50,7 @@ Using the patterns and standards you learned in this class, design and build a m
 
 The microservice needs to have the following items implemented:
 
-* Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* Needs to be a REST service.
 * All CRUD endpoints need to be implemented (5 in total).
     * createLoan
     * updateLoan
@@ -34,17 +59,21 @@ The microservice needs to have the following items implemented:
         * getLoansByClientId
         * getAllLoans
     
-#### Endpoint Detail
+### Endpoint Detail
 ##### /autoloan/createLoan
 * Accepts loan information from request body.
 * Returns loan created in response body.
 * Returns a 200 status code if successful.
 * Use Cassandra to store *AutoLoan* objects.
-* Use a circuit breaker to return a message if the data or database is unavailable.
-    ```text
-    Data is unavailable at this time.
-    ```
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
+* If the database is unavailable, a default message should be returned in the response body.
+    ```json
+    {
+      "defaultMessage" : "No accounts available to show currently"
+    }
+    ```
+    This message can be part of the data model and is excluded from the response body when it is null.  Conversely, when the default message is sent, no other key/value pairs from the model are sent in the response body.  See reference documentation on how to do this.
+    * [@JsonInclude Example](https://www.java67.com/2019/09/3-ways-to-ignore-null-fields-in-json-java-jackson.html)
     
 ###### Request Body
 
@@ -171,12 +200,8 @@ Using the patterns and standards you learned in this class, design and build a m
 
 The microservice needs to have the following items implemented:
 
-* Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* Needs to be a REST service.
 * Use Cassandra to store *CreditCard* objects.
-* Use a circuit breaker to return a message if the data or database is unavailable.
-    ```text
-    Data is unavailable at this time.
-    ```
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * All CRUD endpoints need to be implemented (5 in total).
     * createCreditCard
@@ -186,8 +211,16 @@ The microservice needs to have the following items implemented:
         * getCreditCardsByClientId
         * getAllCreditCards
 * Credit card numbers are all randomly generated, unique, 16 digit numbers.  The first four numbers of the account number are always 1234.
-    
-#### Endpoint Detail
+* If the database is unavailable, a default message should be returned in the response body.
+    ```json
+    {
+      "defaultMessage" : "No accounts available to show currently"
+    }
+    ```
+    This message can be part of the data model and is excluded from the response body when it is null.  Conversely, when the default message is sent, no other key/value pairs from the model are sent in the response body.  See reference documentation on how to do this.
+    * [@JsonInclude Example](https://www.java67.com/2019/09/3-ways-to-ignore-null-fields-in-json-java-jackson.html)
+     
+### Endpoint Detail
 ##### /creditcard/createCreditCard
 * Accepts credit card information from request body.
 * Returns credit card created in response body.
@@ -313,12 +346,8 @@ Using the patterns and standards you learned in this class, design and build a m
 
 The microservice needs to have the following items implemented:
 
-* Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
+* Needs to be a REST service.
 * Use JPA and MySQL to store *DepositAccount* objects.
-* Use a circuit breaker to return a message if the data or database is unavailable.
-    ```text
-    Data is unavailable at this time.
-    ```
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * All CRUD endpoints need to be implemented (5 in total).
     * createDepositAccount
@@ -328,8 +357,16 @@ The microservice needs to have the following items implemented:
         * getDepositAccountsByClientId
         * getAllDepositAccounts
 * The deposit account number is a randomly generated, unique, 9-digit numeric value which is assigned to the account when it is created.
-    
-###### Endpoint Detail
+* If the database is unavailable, a default message should be returned in the response body.
+    ```json
+    {
+      "defaultMessage" : "No accounts available to show currently"
+    }
+    ```
+    This message can be part of the data model and is excluded from the response body when it is null.  Conversely, when the default message is sent, no other key/value pairs from the model are sent in the response body.  See reference documentation on how to do this.
+    * [@JsonInclude Example](https://www.java67.com/2019/09/3-ways-to-ignore-null-fields-in-json-java-jackson.html)
+     
+### Endpoint Detail
 ##### /deposit/createDepositAccount
 * Accepts user information from request body.
 * Returns deposit account information created in response body.
@@ -463,11 +500,14 @@ Using the patterns and standards you learned in this class, design and build an 
 
 The microservice needs to have the following items implemented:
 
-* Needs to be a REST service.  For more information, see the tutorial [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* Needs to be a REST client.  For more information, see the tutorial [Consuming a RESTful Web Service](https://spring.io/guides/gs/consuming-rest/)
+* Needs to be a REST service.
+* Needs to be a REST client.
     * The REST client will consume endpoint data from the 3 other microservices to be able to return the data below.
     * *Some* of the endpoints from the other microservices will be used.  Don't expect to utilize all endpoints from all the other microservices.
     * Create a single service (class) that will invoke methods from 3 other services (classes) that make calls to their respective microservices. (i.e. a DepositService, CreditCardService and an AutoLoanService), and then aggregate the results into a single object that can be passed back to the REST controller.
+    * Each call to a REST service needs to have a circuit breaker pattern applied.
+    * The RestTemplate needs to be configured with a 5 second timeout. 
+        * [RestTemplate Timeout Example](https://howtodoinjava.com/spring-boot2/resttemplate/resttemplate-timeout-example/)
 * The model class(es) need to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * The orchestrator service needs to aggregate information from all 3 microservices and serve it via a REST endpoint.
     
@@ -513,7 +553,7 @@ Aggregated response should look like:
 }
 ```
 
-* When one of the microservices does not respond in-time:
+* When one of the microservices does not respond:
 ```json
 {
   "accountSummary" : {
