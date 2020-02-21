@@ -26,7 +26,7 @@ public class CreditCard {
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String balance;
+    private double balance;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String defaultMessage;
@@ -44,7 +44,7 @@ public class CreditCard {
         return name;
     }
 
-    public String getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -60,7 +60,7 @@ public class CreditCard {
         this.name = name;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

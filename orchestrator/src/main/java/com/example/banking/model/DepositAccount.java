@@ -1,17 +1,10 @@
 package com.example.banking.model;
 
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+public class DepositAccount {
 
-@Entity
-public class AutoLoan {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
@@ -19,13 +12,17 @@ public class AutoLoan {
     private String clientId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String accountNumber;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private double balance;
+    private String balance;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String defaultMessage;
+
 
     public Long getId() {
         return id;
@@ -35,14 +32,19 @@ public class AutoLoan {
         return clientId;
     }
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
     public String getName() {
         return name;
     }
 
-    public double getBalance() {
+    public String getBalance() {
         return balance;
     }
 
+    // Setter Methods
 
     public void setId(Long id) {
         this.id = id;
@@ -52,12 +54,12 @@ public class AutoLoan {
         this.clientId = clientId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDefaultMessage() {
@@ -68,13 +70,19 @@ public class AutoLoan {
         this.defaultMessage = defaultMessage;
     }
 
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
-        return "AutoLoan{" +
+        return "DepositAccount{" +
                 "id=" + id +
                 ", clientId='" + clientId + '\'' +
+                ", accountNumber='" + accountNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", balance='" + balance + '\'' +
                 '}';
     }
+
 }

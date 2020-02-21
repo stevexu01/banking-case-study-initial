@@ -35,7 +35,7 @@ public class DepositAccountController {
     @PostMapping("createDepositAccount")
     public DepositAccount createDepositAccount(@RequestBody DepositAccount depositAccount) {
 
-        final DepositAccount  depositAccountCreated = this.service.createDepositAccount(depositAccount);
+        DepositAccount  depositAccountCreated = this.service.createDepositAccount(depositAccount);
 
         //TODO: delete after test
         ObjectMapper mapper = new ObjectMapper();

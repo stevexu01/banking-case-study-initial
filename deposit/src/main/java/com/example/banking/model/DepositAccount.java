@@ -2,10 +2,7 @@ package com.example.banking.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class DepositAccount {
@@ -16,16 +13,24 @@ public class DepositAccount {
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column
     private String clientId;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column
     private String accountNumber;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String balance;
+    @Column
+    private Double balance;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column
+    private Double initialBalance;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String defaultMessage;
@@ -47,7 +52,7 @@ public class DepositAccount {
         return name;
     }
 
-    public String getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
@@ -77,8 +82,16 @@ public class DepositAccount {
         this.defaultMessage = defaultMessage;
     }
 
-    public void setBalance(String balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(Double initialBalance) {
+        this.initialBalance = initialBalance;
     }
 
     @Override
@@ -88,8 +101,8 @@ public class DepositAccount {
                 ", clientId='" + clientId + '\'' +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", name='" + name + '\'' +
-                ", balance='" + balance + '\'' +
+                ", balance=" + balance +
+                ", initialBalance=" + initialBalance +
                 '}';
     }
-
 }

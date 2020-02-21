@@ -2,16 +2,8 @@ package com.example.banking.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class AutoLoan {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
@@ -22,7 +14,7 @@ public class AutoLoan {
     private String name;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private double balance;
+    private String balance;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String defaultMessage;
@@ -39,7 +31,7 @@ public class AutoLoan {
         return name;
     }
 
-    public double getBalance() {
+    public String getBalance() {
         return balance;
     }
 
@@ -56,7 +48,7 @@ public class AutoLoan {
         this.name = name;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(String balance) {
         this.balance = balance;
     }
 

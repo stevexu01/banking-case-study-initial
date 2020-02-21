@@ -7,9 +7,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class DepositAccountService {
+    private final Integer MIN_ACCT_NUM = 1000000;
+    private final Integer MAX_ACCT_NUM =10000000;
+
     private DepositAccountRepository repository;
 
     public DepositAccountService(DepositAccountRepository repository) {
@@ -18,6 +22,11 @@ public class DepositAccountService {
 
 
     public DepositAccount createDepositAccount(DepositAccount depositAccount) {
+        depositAccount.setBalance(depositAccount.getInitialBalance());
+        final int randomNum = ThreadLocalRandom.current().nextInt(MIN_ACCT_NUM, MAX_ACCT_NUM + 1);
+        depositAccount.setAccountNumber("" + randomNum);
+        depositAccount.setInitialBalance(null);
+
         return this.repository.save(depositAccount);
     }
 
