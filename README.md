@@ -1,4 +1,6 @@
 # Banking Case Study
+* Zhi Feng Xu 855076
+* Finished all.
 
 You're going to create a banking application.  The banking application has the following lines of business (LoBs):
 

@@ -4,9 +4,13 @@ import com.example.banking.model.AccountSummary;
 import com.example.banking.model.AutoLoan;
 import com.example.banking.model.CreditCard;
 import com.example.banking.model.DepositAccount;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -27,18 +31,38 @@ public class OrchestratorClient {
 
 
     private List<AutoLoan> getAutoLoansByClientId(String clientId) {
-        AutoLoanCollection collection = this.restTemplate.getForObject(URLs[0] + clientId, AutoLoanCollection.class);
-        return collection.getAutoLoans();
+        ResponseEntity<AutoLoan[]> response =
+                restTemplate.getForEntity(
+                        URLs[0] + clientId,
+                        AutoLoan[].class);
+        AutoLoan[] loans = response.getBody();
+
+        return Arrays.asList(loans);
+
     }
 
     private List<CreditCard> getCreditCardsByClientId(String clientId) {
-        CreditCardCollection collection = this.restTemplate.getForObject(URLs[1] + clientId, CreditCardCollection.class);
-        return collection.getCreditCards();
+
+        ResponseEntity<CreditCard[]> response =
+                restTemplate.getForEntity(
+                        URLs[1] + clientId,
+                        CreditCard[].class);
+        CreditCard[] creditCards = response.getBody();
+
+        return Arrays.asList(creditCards);
+
     }
 
     private List<DepositAccount> getDepositAccountsByClientId(String clientId) {
-        DepositAccountCollection collection = this.restTemplate.getForObject(URLs[2] + clientId, DepositAccountCollection.class);
-        return collection.getDepositAccounts();
+
+        ResponseEntity<DepositAccount[]> response =
+                restTemplate.getForEntity(
+                        URLs[2] + clientId,
+                        DepositAccount[].class);
+        DepositAccount[] depositAccounts = response.getBody();
+
+        return Arrays.asList(depositAccounts);
+
     }
 
     public AccountSummary getAccountSummaryByClientId(String clientId){
@@ -47,7 +71,8 @@ public class OrchestratorClient {
 
 
     //Collection types
-    private static class AutoLoanCollection {
+    @JsonIdentityReference
+    public static class AutoLoanCollection {
         List<AutoLoan> autoLoans;
 
         public AutoLoanCollection(List<AutoLoan> autoLoans) {
@@ -59,7 +84,7 @@ public class OrchestratorClient {
         }
     }
 
-    private static class CreditCardCollection {
+    public static class CreditCardCollection {
         List<CreditCard> creditCards;
 
         public CreditCardCollection(List<CreditCard> creditCards) {
@@ -71,7 +96,7 @@ public class OrchestratorClient {
         }
     }
 
-    private static class DepositAccountCollection {
+    public static class DepositAccountCollection {
         List<DepositAccount> depositAccounts;
 
         public DepositAccountCollection(List<DepositAccount> depositAccounts) {
