@@ -50,6 +50,8 @@ public class AutoLoanService {
         updatedLoan.setClientId(autoLoan.getClientId());
         updatedLoan.setName(autoLoan.getName());
 
+        this.repository.save(updatedLoan);
+
         //TODO: fix - update not persisted
         return updatedLoan;
     }

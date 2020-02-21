@@ -5,6 +5,7 @@ import com.example.banking.service.AutoLoanService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,9 +15,12 @@ import java.util.List;
 @RequestMapping("autoloan")
 public class AutoLoanController {
 
-    private static final String DEFAULT_MESSAGE_NO_ACCOUNT = "No accounts available to show currently";
+    private static final String DEFAULT_MESSAGE_NO_ACCOUNT = "No accounts available to show currently.";
 
-   private AutoLoanService autoLoanService;
+    private static final String LOAN_NOT_DELETED = "Record not deleted.";
+    private static final String LOAN_DELETED_SUCCESSFULLY = "Record deleted.";
+
+    private AutoLoanService autoLoanService;
 
     public AutoLoanController(AutoLoanService autoLoanService) {
         this.autoLoanService = autoLoanService;
@@ -98,9 +102,13 @@ public class AutoLoanController {
     }
 
     @RequestMapping (value = "deleteLoan/{id}", method = {RequestMethod.DELETE}, produces = "application/json")
-    public void deleteLoan(@PathVariable("id") Long id){
-        this.autoLoanService.deleteLoan(id);
-        //TODO: failed?
-    }
+    public ResponseEntity<String> deleteLoan(@PathVariable("id") Long id){
 
+        try {
+            this.autoLoanService.deleteLoan(id);
+            return new ResponseEntity<>(LOAN_DELETED_SUCCESSFULLY, HttpStatus.NO_CONTENT);
+        } catch (Exception exc) {
+            return new ResponseEntity<>(LOAN_NOT_DELETED, HttpStatus.NOT_FOUND);
+        }
+    }
 }
