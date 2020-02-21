@@ -12,10 +12,18 @@ public class AutoLoan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String clientId;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String name;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String balance;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String defaultMessage;
 
@@ -58,5 +66,15 @@ public class AutoLoan {
 
     public void setDefaultMessage(String defaultMessage) {
         this.defaultMessage = defaultMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "AutoLoan{" +
+                "id=" + id +
+                ", clientId='" + clientId + '\'' +
+                ", name='" + name + '\'' +
+                ", balance='" + balance + '\'' +
+                '}';
     }
 }

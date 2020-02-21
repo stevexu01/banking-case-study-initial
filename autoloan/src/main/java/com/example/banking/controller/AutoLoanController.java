@@ -14,6 +14,8 @@ import java.util.List;
 @RequestMapping("autoloan")
 public class AutoLoanController {
 
+    private static final String DEFAULT_MESSAGE_NO_ACCOUNT = "No accounts available to show currently";
+
    private AutoLoanService autoLoanService;
 
     public AutoLoanController(AutoLoanService autoLoanService) {
@@ -49,10 +51,10 @@ public class AutoLoanController {
     @GetMapping(value = "getLoansByClientId/{clientId}", produces = "application/json")
     public List<AutoLoan> getLoansByClientId(@PathVariable("clientId") String clientId) {
 
-        List<AutoLoan> autoLoan = null;
+        List<AutoLoan> autoLoanList = null;
 
         try {
-            autoLoan = this.autoLoanService.getLoansByClientId(clientId);
+            autoLoanList = this.autoLoanService.getLoansByClientId(clientId);
 
         } catch (Exception exc) {
             //TODO: return with default message
@@ -60,12 +62,45 @@ public class AutoLoanController {
                     HttpStatus.NOT_FOUND, "AutoLoan with clientId [" + clientId + "] Not Found", exc);
         }
 
-        if(null == autoLoan) {
+        if(autoLoanList.isEmpty()) {
             //TODO:return default message
-
+            //Debug only
+            System.out.println("AutoLoan with clientId [" + clientId + "] Not Found");
+            AutoLoan defaultLoan = new AutoLoan();
+            defaultLoan.setDefaultMessage(DEFAULT_MESSAGE_NO_ACCOUNT);
+            autoLoanList.add(defaultLoan);
         }
 
-        return autoLoan;
+        return autoLoanList;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @GetMapping(value = "getAllLoans", produces = "application/json")
+    public List<AutoLoan> getAllLoans(){
+        return this.autoLoanService.getAllLoans();
+    }
+
+    /**
+     *
+     * @param id
+     * @param autoLoan
+     * @return
+     */
+    @PatchMapping(value = "updateLoan/{id}", produces = "application/json")
+    @ResponseBody
+    public AutoLoan updateLoan(@PathVariable("id") Long id, @RequestBody AutoLoan autoLoan){
+        AutoLoan updated = this.autoLoanService.updateLoan(id, autoLoan);
+
+        return updated;
+    }
+
+    @RequestMapping (value = "deleteLoan/{id}", method = {RequestMethod.DELETE}, produces = "application/json")
+    public void deleteLoan(@PathVariable("id") Long id){
+        this.autoLoanService.deleteLoan(id);
+        //TODO: failed?
     }
 
 }
