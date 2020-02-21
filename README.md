@@ -577,6 +577,15 @@ Aggregated response should look like:
 ```
 Hint:  What combination of collections and custom POJOs would result in the JSON above when the object(s) are serialized? 
 
+## Tips
+* Work on the simpler backend microservices first.  Once all 3 are working as indicated above, move to the orchestrator.
+* When developing the orchestrator, split the work into 3 parts.
+1. Get the client code working and pulling data from the 3 respective microservices.
+2. Get the service code working and aggregating the data properly.
+3. Get the controller working with the proper endpoint with a simple String.
+4. Get the controller working with the proper endpoint with the proper JSON being returned.
+* Remember you can always use System.out.println to temporarily print out data being returned/manipulated at any point in your code.
+
 ## Technology Stack
 * Maven
 * Java
