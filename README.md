@@ -20,7 +20,6 @@ For further reference, please consider the following:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
 * [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/maven-plugin/)
-* [Spring Data for Apache Cassandra](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-cassandra)
 * [Spring Boot Actuator](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#production-ready)
 * [Spring Web](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-developing-web-applications)
 * [Spring Data JPA](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/htmlsingle/#boot-features-jpa-and-spring-data)
@@ -36,7 +35,7 @@ The following guides illustrate how to use some features concretely:
 * [Building REST services with Spring](https://spring.io/guides/tutorials/bookmarks/)
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Jackson Annotation Examples](https://www.baeldung.com/jackson-annotations)
-* [Netflix Circuit Breaker](https://spring.io/guides/gs/circuit-breaker/)
+* [Hystrix Circuit Breaker](https://spring.io/guides/gs/circuit-breaker/)
 * [RestTemplate Timeout Example](https://howtodoinjava.com/spring-boot2/resttemplate/resttemplate-timeout-example/)
 * [@JsonInclude Example](https://www.java67.com/2019/09/3-ways-to-ignore-null-fields-in-json-java-jackson.html)
 
@@ -64,7 +63,7 @@ The microservice needs to have the following items implemented:
 * Accepts loan information from request body.
 * Returns loan created in response body.
 * Returns a 200 status code if successful.
-* Use Cassandra to store *AutoLoan* objects.
+* Use JPA and H2 to store *AutoLoan* objects.
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * If the database is unavailable, a default message should be returned in the response body.
     ```json
@@ -201,7 +200,7 @@ Using the patterns and standards you learned in this class, design and build a m
 The microservice needs to have the following items implemented:
 
 * Needs to be a REST service.
-* Use Cassandra to store *CreditCard* objects.
+* Use JPA and H2 to store *CreditCard* objects.
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * All CRUD endpoints need to be implemented (5 in total).
     * createCreditCard
@@ -347,7 +346,7 @@ Using the patterns and standards you learned in this class, design and build a m
 The microservice needs to have the following items implemented:
 
 * Needs to be a REST service.
-* Use JPA and MySQL to store *DepositAccount* objects.
+* Use JPA and H2 to store *DepositAccount* objects.
 * The model class needs to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * All CRUD endpoints need to be implemented (5 in total).
     * createDepositAccount
@@ -511,7 +510,7 @@ The microservice needs to have the following items implemented:
 * The model class(es) need to implement an inner builder.  (Builder pattern implemented as an inner class.)
 * The orchestrator service needs to aggregate information from all 3 microservices and serve it via a REST endpoint.
     
-###### Endpoint Detail
+#### Endpoint Detail
 The orchestrator has a single REST endpoint:
 
 ##### /getAccountSummaryByClientId/{clientId}
@@ -576,15 +575,15 @@ Aggregated response should look like:
   }
 }
 ```
- 
+Hint:  What combination of collections and custom POJOs would result in the JSON above when the object(s) are serialized? 
+
 ## Technology Stack
 * Maven
 * Java
 * Spring
 * Spring Boot
-* Cassandra
 * JPA
-* MySQL
+* H2
 * REST Service
 * REST Client
 * Hystrix Circuit Breaker
