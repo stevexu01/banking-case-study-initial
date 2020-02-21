@@ -17,13 +17,11 @@ public class AutoLoanService {
     }
 
     public AutoLoan createAutoLoan(AutoLoan autoLoan) {
-        //TODO: fix
         return this.repository.save(autoLoan);
     }
 
     public List<AutoLoan> getLoansByClientId(String clientId) {
 
-        //TODO: fix
         return this.repository.findByClientId(clientId);
     }
 
